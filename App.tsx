@@ -7,6 +7,7 @@ import AntDesign from '@expo/vector-icons/AntDesign';
 import { MD3LightTheme, PaperProvider } from "react-native-paper";
 import { createMaterialTopTabNavigator } from "@react-navigation/material-top-tabs";
 import SongsContextProvider from "./src/SongsContext";
+import { StatusBar } from "expo-status-bar";
 
 export type RootStackParamList = {
   Home: undefined;
@@ -33,6 +34,7 @@ export default function App() {
           </NavigationContainer>
         </SafeAreaProvider>
       </SongsContextProvider>
+      <StatusBar/>
     </PaperProvider>
   );
 };

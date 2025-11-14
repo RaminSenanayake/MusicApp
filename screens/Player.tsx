@@ -9,8 +9,9 @@ import { Image } from 'expo-image';
 import { savedSongType, useSongsContext } from '../src/SongsContext';
 import TrackPlayer, { Event, State, useProgress, useTrackPlayerEvents } from 'react-native-track-player';
 import { IconSource } from 'react-native-paper/lib/typescript/components/Icon';
-import Slider from '@react-native-community/slider';
+import { Slider } from '@miblanchard/react-native-slider';
 import { convertToMinutes } from '../src/util';
+import { DefaultTheme } from '@react-navigation/native';
 
 type PlayerScreenProps = NativeStackScreenProps<RootStackParamList, "Player">;
 
@@ -27,6 +28,7 @@ export default function Player({ route, navigation }: PlayerScreenProps) {
   });
   const [isPreviousDisabled, setPreviousDisabled] = useState<boolean>(true);
   const [isNextDisabled, setNextDisabled] = useState<boolean>(true);
+  const [isShuffled, setShuffled] = useState<boolean>(false);
   const { position, duration } = useProgress();
 
   const getSong = async () => {
@@ -75,19 +77,32 @@ export default function Player({ route, navigation }: PlayerScreenProps) {
           subtitleVariant='bodyMedium'
           style={styles.title}
         />
-        {song.id && <View>
-          <Slider minimumValue={0} maximumValue={duration} value={position} onSlidingComplete={(seconds) => {
-            TrackPlayer.seekTo(seconds);
-          }} />
-          <View style={styles.songTimes}>
-            <Text>{convertToMinutes(position)}</Text>
-            <Text>{convertToMinutes(duration)}</Text>
+        {song.id &&
+          <View>
+            <Slider
+              minimumValue={0}
+              maximumValue={duration}
+              value={position}
+              minimumTrackTintColor={DefaultTheme.colors.primary}
+              thumbTintColor={DefaultTheme.colors.primary}
+              trackClickable={true}
+              thumbStyle={{ height: 15, width: 15 }}
+              thumbTouchSize={{ height: 15, width: 15 }}
+              onSlidingComplete={(seconds) => {
+                TrackPlayer.seekTo(seconds[0])
+              }} />
+            <View style={styles.songTimes}>
+              <Text>{convertToMinutes(position)}</Text>
+              <Text>{convertToMinutes(duration)}</Text>
+            </View>
           </View>
-        </View>}
+        }
         <View style={styles.actions}>
+          <IconButton icon="shuffle" size={40} disabled={!song.id} iconColor={isShuffled ? DefaultTheme.colors.primary : DefaultTheme.colors.text} onPress={() => setShuffled(prev => !prev)} />
           <IconButton icon="step-backward" size={40} onPress={goPrevious} disabled={isPreviousDisabled} />
           <PlayPauseButton key={song.id} disabled={!song.id} />
           <IconButton icon="step-forward" size={40} onPress={goNext} disabled={isNextDisabled} />
+          <IconButton icon="repeat" size={40} disabled={!song.id} />
         </View>
       </Card>
     </SafeAreaView>
@@ -128,19 +143,19 @@ const styles = StyleSheet.create({
   },
   cover: {
     height: 350,
-    width: 350
+    width: 350,
+    borderRadius: 20
   },
   title: {
-    marginBottom: 10
+    marginBottom: 10,
+    paddingLeft: 0
   },
   songTimes: {
     flexDirection: "row",
     justifyContent: "space-between",
-    marginInline: 10
   },
   actions: {
     flexDirection: "row",
-    justifyContent: "center",
-    gap: 40
+    justifyContent: "space-evenly"
   }
 });

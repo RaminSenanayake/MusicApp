@@ -17,12 +17,12 @@ const SongsContext = createContext<SongsContextValue | null>(null);
 
 export default function SongsContextProvider({ children }: { children: ReactNode }) {
     const [songs, setSongs] = useState<savedSongType[]>([]);
-    const [songsUpdated, setSongsUpdated] = useState<boolean>(true);
+    const [isSongsToBeAdded, setSongsToBeAdded] = useState<boolean>(true);
 
     const storeSong = async (songs: savedSongType[]) => {
         setSongs(songs);
         await AsyncStorage.setItem("songs", JSON.stringify(songs));
-        setSongsUpdated(true);
+        setSongsToBeAdded(true);
     }
 
     const getData = async () => {
@@ -30,9 +30,10 @@ export default function SongsContextProvider({ children }: { children: ReactNode
         try {
             const result = await AsyncStorage.getItem("songs");
             result != null && setSongs(JSON.parse(result));
-            setSongsUpdated(false);
         } catch (error) {
             console.log(error);
+        } finally {
+            setSongsToBeAdded(false);
         }
     }
 
@@ -45,12 +46,12 @@ export default function SongsContextProvider({ children }: { children: ReactNode
             }
         })();
         console.log("Track player is set up")
-    }, [])
+    }, []);
 
     useEffect(() => {
         console.log("number of songs: " + songs.length);
-        songsUpdated && getData();
-    }, [songsUpdated]);
+        isSongsToBeAdded && getData();
+    }, [isSongsToBeAdded]);
 
     return (
         <SongsContext.Provider value={{
@@ -61,7 +62,7 @@ export default function SongsContextProvider({ children }: { children: ReactNode
         >
             {children}
         </SongsContext.Provider >
-    )
+    );
 }
 
 export function useSongsContext() {
