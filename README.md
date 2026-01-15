@@ -1,17 +1,11 @@
 # 🎵 MusicApp
 
-**MusicApp** is a cross-platform music streaming application designed upon the <a href="https://rntp.dev/">React Native Track Player</a> and a <a href="https://rapidapi.com/amiteshgupta/api/spotify-downloader9">Spotify API</a> where you can download and listen to any song you like.
+**MusicApp** is a cross-platform music streaming application designed upon the [React Native Track Player](https://rntp.dev/) and a [Spotify API](https://rapidapi.com/amiteshgupta/api/spotify-downloader9) where you can download and listen to any song you like.
+> [!NOTE]
+> *This project is developed for a university assignment and yet to optimize for real use.*
 
 ## 📱 Screenshots
-
 *to be added*
-
-<p align="center">
-<img src="[https://via.placeholder.com/200x400.png?text=Home+Screen](https://www.google.com/search?q=https://via.placeholder.com/200x400.png%3Ftext%3DHome%2BScreen)" width="200" />
-<img src="[https://via.placeholder.com/200x400.png?text=Music+Player](https://www.google.com/search?q=https://via.placeholder.com/200x400.png%3Ftext%3DMusic%2BPlayer)" width="200" />
-</p>
-
----
 
 ## ✨ Features
 
